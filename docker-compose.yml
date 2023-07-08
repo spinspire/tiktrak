@@ -21,6 +21,7 @@ services:
     # sveltekit build
     command: sh -c "npx pnpm install && npm run build"
     volumes:
+      - ${PWD}/pb:/app/pb
       - ${PWD}/sk:/app/sk
     environment:
       - HOME=/app/sk
