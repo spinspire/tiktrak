@@ -6,6 +6,7 @@
   export let project_id: string;
   $: store = watch<TicketsResponse>("tickets", {
     filter: `project="${project_id}"`,
+    sort: "-updated",
   });
 </script>
 
