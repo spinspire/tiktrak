@@ -3,13 +3,19 @@
 
   export let files: FileList;
   export let accept = ".*";
-  let multiple = true;
+  export let multiple = true;
   const dispatch = createEventDispatcher();
 </script>
 
 <label class="file">
   <div><slot>Drag/drop files here.</slot></div>
-  <input type="file" {multiple} bind:files on:change={(e) => dispatch("change", files)} {accept} />
+  <input
+    type="file"
+    {multiple}
+    bind:files
+    on:change={(e) => dispatch("change", files)}
+    {accept}
+  />
 </label>
 
 <style lang="scss">
