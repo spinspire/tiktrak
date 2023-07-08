@@ -71,16 +71,31 @@ migrate((db) => {
           "max": null,
           "pattern": ""
         }
+      },
+      {
+        "system": false,
+        "id": "cadzhdpw",
+        "name": "project",
+        "type": "relation",
+        "required": false,
+        "unique": false,
+        "options": {
+          "collectionId": "ne4tcl0f1zrr2v3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
       }
     ],
     "indexes": [
       "CREATE INDEX `idx_JypegPn` ON `tickets` (`type`)",
       "CREATE INDEX `idx_pzKZVfD` ON `tickets` (`status`)"
     ],
-    "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
+    "listRule": "@request.auth.id != \"\" && project.users.id ?= @request.auth.id",
+    "viewRule": "@request.auth.id != \"\" && project.users.id ?= @request.auth.id",
+    "createRule": "@request.auth.id != \"\" && project.users.id ?= @request.auth.id",
+    "updateRule": "@request.auth.id != \"\" && project.users.id ?= @request.auth.id",
     "deleteRule": null,
     "options": {}
   });
