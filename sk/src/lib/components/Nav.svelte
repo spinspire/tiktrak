@@ -3,8 +3,7 @@
   import { page } from "$app/stores";
   const links = [
     ["/", "Home"],
-    ["/posts/", "Posts"],
-    ["/hello/", "Hello"],
+    ["/projects/", "Projects"],
   ];
 </script>
 
