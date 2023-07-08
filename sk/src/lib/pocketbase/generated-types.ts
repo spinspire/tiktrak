@@ -4,7 +4,8 @@
 
 export enum Collections {
 	Hooks = "hooks",
-	Posts = "posts",
+	Projects = "projects",
+	Tickets = "tickets",
 	Users = "users",
 }
 
@@ -51,12 +52,20 @@ export type HooksRecord = {
 	disabled?: boolean
 }
 
-export type PostsRecord = {
+export type ProjectsRecord<Tconfig = unknown> = {
 	title: string
-	body: string
-	slug: string
-	files?: string[]
-	user?: RecordIdString
+	logo?: string
+	config: null | Tconfig
+	description?: string
+	users?: RecordIdString
+}
+
+export type TicketsRecord = {
+	title: string
+	description?: string
+	type: string
+	status?: string
+	substatus?: string
 }
 
 export type UsersRecord = {
@@ -66,11 +75,13 @@ export type UsersRecord = {
 
 // Response types include system fields and match responses from the PocketBase API
 export type HooksResponse = HooksRecord & BaseSystemFields
-export type PostsResponse = PostsRecord & BaseSystemFields
+export type ProjectsResponse<Tconfig = unknown> = ProjectsRecord<Tconfig> & BaseSystemFields
+export type TicketsResponse = TicketsRecord & BaseSystemFields
 export type UsersResponse = UsersRecord & AuthSystemFields
 
 export type CollectionRecords = {
 	hooks: HooksRecord
-	posts: PostsRecord
+	projects: ProjectsRecord
+	tickets: TicketsRecord
 	users: UsersRecord
 }
