@@ -16,6 +16,7 @@
   <pre>{project.description}</pre>
 </div>
 
+<a href="./edit/"><button type="button">edit project</button></a>
 <a href="./tickets/new/edit"><button type="button">create new ticket</button></a
 >
 <List project_id={project.id} />

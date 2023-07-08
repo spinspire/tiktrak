@@ -7,6 +7,7 @@
   $metadata.title = "Projects";
 </script>
 
+<a href="./new/edit/"><button type="button">new project</button></a>
 {#each data.projects as item}
   <p><a href={`${base}/projects/${item.id}`}>{item.title}</a></p>
 {:else}
