@@ -38,7 +38,7 @@ migrate((db) => {
         "id": "lldxpcyh",
         "name": "type",
         "type": "text",
-        "required": false,
+        "required": true,
         "unique": false,
         "options": {
           "min": null,
@@ -51,7 +51,7 @@ migrate((db) => {
         "id": "x4jus3sd",
         "name": "status",
         "type": "text",
-        "required": true,
+        "required": false,
         "unique": false,
         "options": {
           "min": null,
@@ -77,7 +77,7 @@ migrate((db) => {
         "id": "cadzhdpw",
         "name": "project",
         "type": "relation",
-        "required": false,
+        "required": true,
         "unique": false,
         "options": {
           "collectionId": "ne4tcl0f1zrr2v3",
