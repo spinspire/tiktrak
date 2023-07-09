@@ -4,6 +4,7 @@
   import { client, save } from "$lib/pocketbase";
   import { alertOnFailure } from "$lib/pocketbase/ui";
   import type { PageData } from "./$types";
+  import UserPicker from "./UserPicker.svelte";
   export let data: PageData;
   let files: FileList;
   async function submit(e: SubmitEvent) {
@@ -56,6 +57,17 @@
     rows="10"
     title="project description"
   />
+
+  <UserPicker bind:uids={data.project.users} />
+  <div class="users">
+    {#each data.project.users as uid}
+      {#await client.collection("users").getOne(uid) then user}
+        <span class="user">{user.name || user.username}</span>
+      {/await}
+    {:else}
+      <span>No users selected</span>
+    {/each}
+  </div>
   <button type="submit">Save</button>
 </form>
 
@@ -72,6 +84,17 @@
       border-radius: 50%;
       width: 1.5em;
       height: 1.5em;
+    }
+  }
+  .users {
+    .user {
+      border: solid gray 1px;
+      display: inline-block;
+      padding: 0.5em;
+      margin: 1em 0;
+      &:not(:first-child) {
+        margin-left: 1em;
+      }
     }
   }
 </style>
