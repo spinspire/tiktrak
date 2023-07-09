@@ -29,7 +29,9 @@
         file,
         label: file.name,
       };
-      await save("attachments", attachment);
+      // purposely assigning await return value to an unused value, otherwise the loop does not wait
+      // and runs them all in parallel causing "auto-cancellation" errors
+      const record = await save("attachments", attachment);
     }
   }
 </script>
