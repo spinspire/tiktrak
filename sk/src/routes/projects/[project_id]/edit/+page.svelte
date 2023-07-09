@@ -77,7 +77,6 @@
     max-width: 100px;
   }
   .flex {
-    display: flex;
     button {
       margin: 0;
       padding: 0;

@@ -23,7 +23,6 @@
 
 <style lang="scss">
   .flex {
-    display: flex;
     pre {
       padding: 0 1em;
     }
