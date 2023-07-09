@@ -1,4 +1,5 @@
 <script context="module">
+  import "../app.scss";
   import { beforeNavigate } from "$app/navigation";
   import { base } from "$app/paths";
   import { metadata } from "$lib/app/stores";
