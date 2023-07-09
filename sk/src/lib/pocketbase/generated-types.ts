@@ -3,6 +3,7 @@
 */
 
 export enum Collections {
+	Attachments = "attachments",
 	Comments = "comments",
 	Hooks = "hooks",
 	Projects = "projects",
@@ -32,6 +33,13 @@ export type AuthSystemFields = {
 } & BaseSystemFields
 
 // Record types for each collection
+
+export type AttachmentsRecord = {
+	ticket: RecordIdString
+	user: RecordIdString
+	file: string
+	label: string
+}
 
 export type CommentsRecord = {
 	ticket: RecordIdString
@@ -82,6 +90,7 @@ export type UsersRecord = {
 }
 
 // Response types include system fields and match responses from the PocketBase API
+export type AttachmentsResponse = AttachmentsRecord & BaseSystemFields
 export type CommentsResponse = CommentsRecord & BaseSystemFields
 export type HooksResponse = HooksRecord & BaseSystemFields
 export type ProjectsResponse<Tconfig = unknown> = ProjectsRecord<Tconfig> & BaseSystemFields
@@ -89,6 +98,7 @@ export type TicketsResponse = TicketsRecord & BaseSystemFields
 export type UsersResponse = UsersRecord & AuthSystemFields
 
 export type CollectionRecords = {
+	attachments: AttachmentsRecord
 	comments: CommentsRecord
 	hooks: HooksRecord
 	projects: ProjectsRecord

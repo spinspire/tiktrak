@@ -1,5 +1,6 @@
 import { client, watch, type PageStore } from "$lib/pocketbase";
 import type {
+  AttachmentsResponse,
   CommentsResponse,
   TicketsResponse,
 } from "$lib/pocketbase/generated-types";
@@ -18,9 +19,17 @@ export const load: PageLoad = async function ({ params: { id } }) {
           filter: `ticket="${id}"`,
           expand: "user",
         });
+  const attachments: PageStore<AttachmentsResponse> | undefined =
+    id === "new"
+      ? undefined
+      : watch("attachments", {
+          filter: `ticket="${id}"`,
+          expand: "user",
+        });
 
   return {
     item,
     comments,
+    attachments,
   };
 };

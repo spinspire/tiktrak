@@ -1,10 +1,12 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { authModel, save } from "$lib/pocketbase";
+  import FileInput from "$lib/components/FileInput.svelte";
+  import { authModel, client, save } from "$lib/pocketbase";
+  import type { AttachmentsRecord } from "$lib/pocketbase/generated-types";
   import { alertOnFailure } from "$lib/pocketbase/ui";
   import type { PageData } from "./$types";
   export let data: PageData;
-  $: ({ comments } = data);
+  $: ({ comments, attachments } = data);
   async function submit(e: SubmitEvent) {
     data.item.project = data.project.id;
     alertOnFailure(async () => {
@@ -17,6 +19,18 @@
   async function submitComment() {
     await save("comments", comment);
     comment = { ...COMMENT };
+  }
+  let files: FileList;
+  async function upload() {
+    for (const file of files) {
+      let attachment: AttachmentsRecord = {
+        ticket: data.item.id,
+        user: $authModel?.id,
+        file,
+        label: file.name,
+      };
+      await save("attachments", attachment);
+    }
   }
 </script>
 
@@ -46,6 +60,33 @@
 </form>
 
 {#if data.item.id}
+  <table>
+    <tbody>
+      {#each $attachments.items as attachment}
+        <tr>
+          <td>
+            {#await client.files.getUrl(attachment, attachment.file) then url}
+              <a href={url} target="_blank" rel="noreferrer">
+                {attachment.label}
+              </a>
+            {/await}
+          </td>
+          <td
+            >{attachment.expand.user.name ||
+              attachment.expand.user.username}</td
+          >
+          <td>{attachment.updated}</td>
+        </tr>
+      {:else}
+        <tr>
+          <td>No attachments found.</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+  <FileInput bind:files on:change={upload}
+    >Click or drag/drop files to add attachments.</FileInput
+  >
   {#each $comments.items as comment}
     <div class="comment">
       <pre class="author">{comment.expand.user.name ||
