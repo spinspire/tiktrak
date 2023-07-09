@@ -26,7 +26,6 @@ migrate(
     // create users
     for (const username of users) {
       const email = username + "@example.com";
-      const tokenKey = Math.random();
       try {
         dao.findAuthRecordByEmail("users", email); // if not found it will error
       } catch (e) {
@@ -35,13 +34,10 @@ migrate(
             email,
             username,
             name: username,
-            // TODO: setting password does NOT work
-            password: email,
-            passwordConfirm: email,
-            tokenKey,
           });
-          // would this work?
-          // record.passwordHash = record.passwordHash("foo");
+          // instead of setting "password", "passwordConfirm", or "tokenKey" fields we must call
+          // record.setPassword before saving, in order for all those fields to get correctly set
+          record.setPassword(username);
           dao.saveRecord(record);
         } catch (saveErr) {
           console.error("Failed to save user:", username, saveErr);
@@ -83,6 +79,10 @@ migrate(
   },
   (db) => {
     const dao = new Dao(db);
+    // delete attachments
+    for (const record of dao.findRecordsByExpr("attachments")) {
+      dao.deleteRecord(record);
+    }
     // delete tickets
     for (const record of dao.findRecordsByExpr("tickets")) {
       dao.deleteRecord(record);
