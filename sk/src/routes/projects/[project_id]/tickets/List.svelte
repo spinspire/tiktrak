@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { base } from "$app/paths";
   import { watch } from "$lib/pocketbase";
   import Paginator from "$lib/pocketbase/Paginator.svelte";
   import type { TicketsResponse } from "$lib/pocketbase/generated-types";
@@ -7,9 +6,11 @@
   $: store = watch<TicketsResponse>("tickets", {
     filter: `project="${project_id}"`,
     sort: "-updated",
+    expand: "creator",
   });
 </script>
 
+<h4>Tickets</h4>
 <Paginator {store} />
 
 <table>
@@ -18,6 +19,8 @@
       <th>type</th>
       <th>title</th>
       <th>status</th>
+      <th>creator</th>
+      <th>updated</th>
     </tr>
   </thead>
   <tbody>
@@ -26,6 +29,8 @@
         <td>{item.type}</td>
         <td> <a href={`./tickets/${item.id}/edit`}> {item.title}</a></td>
         <td>{item.status || "-"}</td>
+        <td>{item.expand?.creator?.name || "-"}</td>
+        <td>{new Date(item.updated).toLocaleString()}</td>
       </tr>
     {:else}
       <tr>

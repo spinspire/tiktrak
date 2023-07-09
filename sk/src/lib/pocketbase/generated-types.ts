@@ -81,7 +81,8 @@ export type TicketsRecord = {
 	type: string
 	status?: string
 	substatus?: string
-	project?: RecordIdString
+	project: RecordIdString
+	creator: RecordIdString
 }
 
 export type UsersRecord = {

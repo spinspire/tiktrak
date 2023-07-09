@@ -37,13 +37,33 @@
 </script>
 
 <form on:submit|preventDefault={submit}>
-  <select bind:value={data.item.type} required name="type" title="ticket type">
-    <option />
-    <option>task</option>
-    <option>question</option>
-    <option>bug</option>
-    <option>feature</option>
-  </select>
+  <div class="flex">
+    <select
+      bind:value={data.item.type}
+      required
+      name="type"
+      title="ticket type"
+    >
+      <option />
+      <option>task</option>
+      <option>question</option>
+      <option>bug</option>
+      <option>feature</option>
+    </select>
+    <select bind:value={data.item.status} name="status" title="ticket status">
+      <option />
+      <option>created</option>
+      <option>ready</option>
+      <option>on-hold</option>
+      <option>in-progress</option>
+      <option>completed</option>
+    </select>
+    <p>
+      Created by <em>{data.item.expand?.creator?.name || "-"}</em> at {new Date(
+        data.item.created
+      ).toLocaleString()}
+    </p>
+  </div>
   <input
     bind:value={data.item.title}
     required
@@ -62,6 +82,7 @@
 </form>
 
 {#if data.item.id}
+  <h4>File Attachments</h4>
   <table>
     <tbody>
       {#each $attachments.items as attachment}
@@ -81,7 +102,7 @@
         </tr>
       {:else}
         <tr>
-          <td>No attachments found.</td>
+          <p>None so far.</p>
         </tr>
       {/each}
     </tbody>
@@ -89,12 +110,17 @@
   <FileInput bind:files on:change={upload}
     >Click or drag/drop files to add attachments.</FileInput
   >
+  <h4>User Comments</h4>
   {#each $comments.items as comment}
     <div class="comment">
       <pre class="author">{comment.expand.user.name ||
-          comment.expand.user.username} on {comment.updated}</pre>
+          comment.expand.user.username} on {new Date(
+          comment.updated
+        ).toLocaleString()}</pre>
       <pre class="body">{comment.body}</pre>
     </div>
+  {:else}
+    <p>None so far.</p>
   {/each}
   <form on:submit|preventDefault={submitComment}>
     <h4>New Comment</h4>
