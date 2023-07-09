@@ -86,6 +86,21 @@ migrate((db) => {
           "maxSelect": 1,
           "displayFields": []
         }
+      },
+      {
+        "system": false,
+        "id": "5ubevx6b",
+        "name": "creator",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
       }
     ],
     "indexes": [

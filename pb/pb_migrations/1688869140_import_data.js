@@ -26,23 +26,16 @@ migrate(
     // create users
     for (const username of users) {
       const email = username + "@example.com";
-      try {
-        dao.findAuthRecordByEmail("users", email); // if not found it will error
-      } catch (e) {
-        try {
-          const record = new Record(coll_users, {
-            email,
-            username,
-            name: username,
-          });
-          // instead of setting "password", "passwordConfirm", or "tokenKey" fields we must call
-          // record.setPassword before saving, in order for all those fields to get correctly set
-          record.setPassword(username);
-          dao.saveRecord(record);
-        } catch (saveErr) {
-          console.error("Failed to save user:", username, saveErr);
-        }
-      }
+      const record = new Record(coll_users, {
+        id: username,
+        email,
+        username,
+        name: username,
+      });
+      // instead of setting "password", "passwordConfirm", or "tokenKey" fields we must call
+      // record.setPassword before saving, in order for all those fields to get correctly set
+      record.setPassword(username);
+      dao.saveRecord(record);
     }
     // create projects
     const config = {
@@ -51,15 +44,12 @@ migrate(
     };
     for (const i in projects) {
       const { title, users } = projects[i];
-      const uids = users
-        .map((u) => dao.findAuthRecordByUsername("users", u))
-        .map((u) => u.id);
       const description = `${title} description\n`.repeat(10);
       dao.saveRecord(
         new Record(coll_projects, {
           title,
           description,
-          users: uids,
+          users,
           config,
         })
       );
@@ -67,11 +57,13 @@ migrate(
       const project = dao.findFirstRecordByData("projects", "title", title);
       for (let i = 0; i < 50; i++) {
         const type = ticket_types[i % ticket_types.length];
+        const creator = users[i % users.length];
         dao.saveRecord(
           new Record(coll_tickets, {
             title: `ticket ${i + 1} for ${title}`,
             type,
             project: project.id,
+            creator,
           })
         );
       }
