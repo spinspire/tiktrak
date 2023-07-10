@@ -23,17 +23,46 @@
     comment = { ...COMMENT };
   }
   let files: FileList;
-  async function upload() {
-    for (const file of files) {
+  async function upload(event: Event | FileList) {
+    let records: AttachmentsRecord[] = [];
+    // did we get a FileList or an Event as argument?
+    const _files = event instanceof FileList ? event : files;
+    for (const file of _files) {
       let attachment: AttachmentsRecord = {
         ticket: data.item.id,
         user: $authModel?.id,
         file,
         label: file.name,
       };
-      // purposely assigning await return value to an unused value, otherwise the loop does not wait
+      // purposely assigning and awaiting, otherwise the loop does not wait
       // and runs them all in parallel causing "auto-cancellation" errors
-      const record = await save("attachments", attachment);
+      records.push(await save("attachments", attachment)); // collect records
+    }
+    return records;
+  }
+
+  // intercepts "paste" event, uploads files, inserts them into the event target textarea
+  async function insertOnPaste(e: ClipboardEvent) {
+    if (e.clipboardData?.files && e.clipboardData.files.length > 0) {
+      e.stopPropagation(); // don't let other handlers run, or else double upload could happen
+      e.preventDefault(); // don't allow default text insertion into the textarea
+      const input = e.target as HTMLTextAreaElement;
+      const { value, selectionStart } = input;
+      const files = e.clipboardData.files;
+      const records = await upload(files);
+      const inserts = records
+        .map(function (record, i) {
+          const url = client.files.getUrl(record, record.file);
+          const { pathname } = new URL(url);
+          const prefix = files[i].type.startsWith("image/") ? "!" : "";
+          return `${prefix}[${record.label}](${pathname})`;
+        })
+        .join(", ");
+      const head = value.slice(0, selectionStart);
+      const tail = value.slice(selectionStart);
+      input.value = head + inserts + tail;
+      // without this, Svelte won't notice the change
+      input.dispatchEvent(new Event("input"));
     }
   }
 </script>
@@ -94,6 +123,7 @@
       placeholder="description"
       rows="10"
       title="ticket description"
+      on:paste={insertOnPaste}
     />
   </details>
   <button type="submit">Save</button>
@@ -161,6 +191,7 @@
       placeholder="comment body"
       rows="5"
       title="comment body"
+      on:paste={insertOnPaste}
     />
     <button type="submit">Add Comment</button>
   </form>
