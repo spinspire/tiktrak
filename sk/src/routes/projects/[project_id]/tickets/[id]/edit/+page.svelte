@@ -7,6 +7,7 @@
   import Markdown from "svelte-markdown";
   import type { PageData } from "./$types";
   export let data: PageData;
+  const descriptionEmpty = !data.item.description;
   $: ({ comments, attachments } = data);
   async function submit(e: SubmitEvent) {
     data.item.project = data.project.id;
@@ -83,13 +84,18 @@
     placeholder="title"
     title="ticket title"
   />
-  <textarea
-    bind:value={data.item.description}
-    name="description"
-    placeholder="description"
-    rows="10"
-    title="ticket description"
-  />
+  <h4>Description</h4>
+  <Markdown source={data.item.description} options={{ sanitize: true }} />
+  <details open={descriptionEmpty}>
+    <summary>edit</summary>
+    <textarea
+      bind:value={data.item.description}
+      name="description"
+      placeholder="description"
+      rows="10"
+      title="ticket description"
+    />
+  </details>
   <button type="submit">Save</button>
 </form>
 
@@ -140,11 +146,14 @@
   {/each}
   <form on:submit|preventDefault={submitComment}>
     <h4>New Comment</h4>
-    <div class="comment">
-      <div class="body">
-        <Markdown source={comment.body} options={{ sanitize: true }} />
+    <details open>
+      <summary>Preview</summary>
+      <div class="comment">
+        <div class="body">
+          <Markdown source={comment.body} options={{ sanitize: true }} />
+        </div>
       </div>
-    </div>
+    </details>
     <textarea
       bind:value={comment.body}
       required
