@@ -1,19 +1,26 @@
 <script lang="ts">
   import Dialog from "$lib/components/Dialog.svelte";
-  import { watch } from "$lib/pocketbase";
-  import Paginator from "$lib/pocketbase/Paginator.svelte";
+  import { client } from "$lib/pocketbase";
+  import type { UsersResponse } from "$lib/pocketbase/generated-types";
   export let uids: string[];
-  const users = watch("users");
+  export let choices: UsersResponse[] | undefined;
+  export let filter = "";
+  async function load() {
+    if (choices === undefined) {
+      choices = await client
+        .collection("users")
+        .getFullList<UsersResponse>({ filter });
+    }
+  }
 </script>
 
 <Dialog>
-  <button type="button" slot="trigger">Select Users</button>
+  <button on:click={load} type="button" slot="trigger">Select Users</button>
   <div class="wrapper">
     <h4>Select Users</h4>
-    <Paginator store={users} />
     <table>
       <tbody>
-        {#each $users.items as user}
+        {#each choices ?? [] as user}
           <tr>
             <td>
               <label>
@@ -34,7 +41,6 @@
         {/each}
       </tbody>
     </table>
-    <Paginator store={users} />
   </div>
 </Dialog>
 
