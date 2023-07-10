@@ -19,6 +19,7 @@ export const load: PageLoad = async function ({ params: { id } }) {
       : watch("comments", {
           filter: `ticket="${id}"`,
           expand: "user",
+          sort: "created",
         });
   const attachments: PageStore<AttachmentsResponse> | undefined =
     id === "new"
@@ -26,6 +27,7 @@ export const load: PageLoad = async function ({ params: { id } }) {
       : watch("attachments", {
           filter: `ticket="${id}"`,
           expand: "user",
+          sort: "created",
         });
 
   return {
