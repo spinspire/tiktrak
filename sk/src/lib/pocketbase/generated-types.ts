@@ -83,6 +83,7 @@ export type TicketsRecord = {
 	substatus?: string
 	project: RecordIdString
 	creator: RecordIdString
+	assignee?: RecordIdString
 }
 
 export type UsersRecord = {

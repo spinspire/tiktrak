@@ -8,7 +8,7 @@ export const load: LayoutLoad = async function ({ params: { project_id } }) {
       ? ({ users: [] } as ProjectsResponse)
       : await client
           .collection("projects")
-          .getOne<ProjectsResponse>(project_id);
+          .getOne<ProjectsResponse>(project_id, { expand: "users" });
 
   return {
     project,

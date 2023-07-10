@@ -58,6 +58,17 @@
       <option>in-progress</option>
       <option>completed</option>
     </select>
+    <!-- svelte-ignore a11y-label-has-associated-control -->
+    <select
+      bind:value={data.item.assignee}
+      name="assignee"
+      title="ticket assigned to"
+    >
+      <option />
+      {#each data.project.expand?.users || [] as user}
+        <option value={user.id}>{user.name || user.username}</option>
+      {/each}
+    </select>
     <p>
       Created by <em>{data.item.expand?.creator?.name || "-"}</em> at {new Date(
         data.item.created
