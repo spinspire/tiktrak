@@ -4,6 +4,7 @@
   import { authModel, client, save } from "$lib/pocketbase";
   import type { AttachmentsRecord } from "$lib/pocketbase/generated-types";
   import { alertOnFailure } from "$lib/pocketbase/ui";
+  import Markdown from "svelte-markdown";
   import type { PageData } from "./$types";
   export let data: PageData;
   $: ({ comments, attachments } = data);
@@ -128,13 +129,22 @@
           comment.expand.user.username} on {new Date(
           comment.updated
         ).toLocaleString()}</pre>
-      <pre class="body">{comment.body}</pre>
+      <div class="body">
+        <!-- TODO: "sanitze" option is deprecated; replace with "real" sanitization -->
+        <!-- see https://marked.js.org/using_advanced#options -->
+        <Markdown source={comment.body} options={{ sanitize: true }} />
+      </div>
     </div>
   {:else}
     <p>None so far.</p>
   {/each}
   <form on:submit|preventDefault={submitComment}>
     <h4>New Comment</h4>
+    <div class="comment">
+      <div class="body">
+        <Markdown source={comment.body} options={{ sanitize: true }} />
+      </div>
+    </div>
     <textarea
       bind:value={comment.body}
       required
