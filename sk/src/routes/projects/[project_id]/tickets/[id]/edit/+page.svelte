@@ -107,8 +107,8 @@
       {/each}
     </tbody>
   </table>
-  <FileInput bind:files on:change={upload}
-    >Click or drag/drop files to add attachments.</FileInput
+  <FileInput bind:files on:change={upload} pasteFile={true}
+    >Click here / drag-drop files / copy-paste images to add attachments.</FileInput
   >
   <h4>User Comments</h4>
   {#each $comments.items as comment}
