@@ -25,10 +25,9 @@
   <title>{title}</title>
   <meta name="description" content={description} />
 </svelte:head>
-
 <header>
   <a href={`${base}/`} class="logo"
-    ><img src={`${base}/favicon.ico`} alt="application logo" /></a
+    ><img src={`${base}/logo.svg`} alt="application logo" /></a
   >
   <Nav />
   <LoginBadge />
@@ -52,9 +51,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    border-bottom: 1px solid var(--elements-color-dark);
+    height: 5rem;
     .logo {
-      width: 2rem;
+      width: auto;
       height: 2rem;
     }
+  }
+  main {
+    padding: 20px;
+    background-color: var(--background-color-dark-level1);
+  }
+  footer {
+  border-top: 1px solid var(--elements-color-dark);
+  
   }
 </style>

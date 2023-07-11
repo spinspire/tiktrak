@@ -3,17 +3,25 @@
   --background-color-light: #ffffff;
   --primary-button-light: #007bff;
   --hover-light: #e8e8e8;
+  --elements-color-light: rgb(100, 104, 110);
 
   /* Dark Mode Variables */
-  --background-color-dark: #242E42;
+  --background-color-dark: #242e42;
   --primary-button-dark: #ff6600;
   --hover-dark: #333333;
+  --elements-color-dark: #2f3b52ff;
+  --background-color-dark-level1: #2f3b52ff;
+  --background-color-dark-level2: #20293cff;
 }
 
 body {
   /* TODO: Set background color based on mode */
   background-color: var(--background-color-dark);
   max-width: 1280px;
+  // override default fonts
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji,
+    sans-serif;
 }
 
 body.dark-mode {
