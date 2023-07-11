@@ -10,6 +10,7 @@
 
 <script lang="ts">
   import LoginBadge from "$lib/components/LoginBadge.svelte";
+  import LoginGuard from "$lib/components/LoginGuard.svelte";
 
   $: title = $metadata.title ? $metadata.title + " | " + site.name : site.name;
   $: description = $metadata.description ?? site.description;
@@ -37,7 +38,10 @@
     <h1>{headline}</h1>
   {/if}
   <Alerts />
-  <slot />
+  <LoginGuard>
+    <slot />
+    <blockquote slot="login">Please sign-in.</blockquote>
+  </LoginGuard>
 </main>
 <footer>
   <!-- footer stuff -->
