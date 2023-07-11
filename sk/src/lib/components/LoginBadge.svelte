@@ -10,8 +10,8 @@
   }
   const unsubscribe = client.authStore.onChange((token, model) => {
     if (model) {
-      const { name, username } = model;
-      alerts.success(`Signed in as ${name || username}`, 5000);
+      const { name, username, email } = model;
+      alerts.success(`Signed in as ${name || username || "Admin"}`, 5000);
     } else {
       alerts.success(`Signed out`, 5000);
     }
@@ -53,7 +53,7 @@
   </Dialog>
 {:else}
   <Dialog>
-    <button slot="trigger">{signup ? 'Sign In / Sign Up' : 'Sign In'}</button>
+    <button slot="trigger">{signup ? "Sign In / Sign Up" : "Sign In"}</button>
     <LoginForm {signup} />
   </Dialog>
 {/if}
