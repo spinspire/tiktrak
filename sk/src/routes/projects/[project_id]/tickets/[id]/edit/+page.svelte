@@ -8,7 +8,7 @@
   import type { PageData } from "./$types";
   export let data: PageData;
   const descriptionEmpty = !data.item.description;
-  $: ({ comments, attachments } = data);
+  const { comments, attachments } = data;
   async function submit(e: SubmitEvent) {
     data.item.project = data.project.id;
     alertOnFailure(async () => {
