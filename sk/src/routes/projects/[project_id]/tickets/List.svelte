@@ -3,11 +3,17 @@
   import Paginator from "$lib/pocketbase/Paginator.svelte";
   import type { TicketsResponse } from "$lib/pocketbase/generated-types";
   export let project_id: string;
-  $: store = watch<TicketsResponse>("tickets", {
-    filter: `project="${project_id}"`,
-    sort: "-updated",
-    expand: "creator",
-  });
+  $: store = watch<TicketsResponse>(
+    "tickets",
+    {
+      filter: `project="${project_id}"`,
+      sort: "-updated",
+      expand: "creator",
+    },
+    undefined, // page
+    undefined, // perPage
+    false // realtime
+  );
 </script>
 
 <h4>Tickets</h4>
