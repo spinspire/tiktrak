@@ -1,15 +1,16 @@
-import { client, watch, type PageStore } from "$lib/pocketbase";
+import { client, watch, type PageStore, authModel } from "$lib/pocketbase";
 import type {
   AttachmentsResponse,
   CommentsResponse,
   TicketsResponse,
 } from "$lib/pocketbase/generated-types";
+import { get } from "svelte/store";
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async function ({ params: { id } }) {
   const item: TicketsResponse =
     id === "new"
-      ? ({} as TicketsResponse)
+      ? ({ description: "", creator: get(authModel)?.id } as TicketsResponse)
       : await client
           .collection("tickets")
           .getOne<TicketsResponse>(id, { expand: "creator" });
