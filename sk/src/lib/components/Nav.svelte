@@ -1,10 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { page } from "$app/stores";
-  const links = [
-    ["/", "Home"],
-    ["/projects/", "Projects"],
-  ];
+  const links = [["/projects/", "Projects"]];
 </script>
 
 <nav>
