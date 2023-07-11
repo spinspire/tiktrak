@@ -1,7 +1,13 @@
 :root {
-  // set root/global variables here:
-  // example ...
-  // --text-main: green;
+  /* Light Mode Variables */
+  --background-color-light: #ffffff;
+  --primary-button-light: #007bff;
+  --hover-light: #e8e8e8;
+
+  /* Dark Mode Variables */
+  --background-color-dark: #242e42;
+  --primary-button-dark: #ff6600;
+  --hover-dark: #333333;
 }
 
 html {
@@ -12,9 +18,15 @@ html {
     flex: 1 1 auto;
     display: flex;
     flex-flow: column;
-    // fixed width and no scrollbars
-    width: 1024px;
+    // fixed width and no horizonal scrollbars
+    width: 1280px;
+    // unset max-width water.css
+    max-width: unset;
     overflow-x: hidden;
+    background-color: var(--background-color-dark);
+    &.dark-mode {
+      background-color: var(--background-color-dark);
+    }
     > div {
       flex: 1 1 auto;
       display: flex;
@@ -28,4 +40,28 @@ html {
 
 .flex {
   display: flex;
+}
+
+/* Primary button styles */
+.button {
+  background-color: var(--primary-button-light);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover styles */
+.button:hover {
+  background-color: var(--hover-light);
+}
+
+/* Dark mode styles */
+.dark-mode .button {
+  background-color: var(--primary-button-dark);
+}
+
+.dark-mode .button:hover {
+  background-color: var(--hover-dark);
 }
