@@ -4,22 +4,25 @@
   import type { PageData } from "./$types";
   import List from "./tickets/List.svelte";
   export let data: PageData;
-  $: ({ project } = data);
   $: $metadata.title = data.project.title;
 </script>
 
 <div class="flex">
-  <img
-    src={client.files.getUrl(data.project, project.logo, { thumb: "100x100" })}
-    alt=""
-  />
-  <pre>{project.description}</pre>
+  {#if data.project.logo}
+    <img
+      src={client.files.getUrl(data.project, data.project.logo, {
+        thumb: "100x100",
+      })}
+      alt="project logo"
+    />
+  {/if}
+  <pre>{data.project.description}</pre>
 </div>
 
 <a href="./edit/"><button type="button">edit project</button></a>
 <a href="./tickets/new/edit"><button type="button">create new ticket</button></a
 >
-<List project_id={project.id} />
+<List project_id={data.project.id} />
 
 <style lang="scss">
   .flex {
