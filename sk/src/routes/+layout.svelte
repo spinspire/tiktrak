@@ -26,22 +26,35 @@
   <meta name="description" content={description} />
 </svelte:head>
 <header>
-  <a href={`${base}/`} class="logo"
-    ><img src={`${base}/logo.svg`} alt="application logo" /></a
-  >
+  <a href={`${base}/`} class="logo">
+    <img class="desktop-logo" src={`${base}/logo.svg`} alt="application logo" />
+    <img class="mobile-logo" src={`${base}/icon.svg`} alt="application logo" />
+  </a>
   <Nav />
   <LoginBadge />
 </header>
-<main>
-  {#if headline}
-    <h1>{headline}</h1>
-  {/if}
-  <Alerts />
-  <LoginGuard>
-    <slot />
-    <blockquote slot="login">Please sign-in.</blockquote>
-  </LoginGuard>
-</main>
+<div class="main-wrapper">
+  <!-- headlines outside of main block -->
+  <div class="headline-wrapper">
+    <div class="overview-title">
+      {#if headline}
+        <h1>{headline}</h1>
+      {:else}
+        <h1>Overview</h1>
+      {/if}
+    </div>
+    <div class="status-alerts">
+      <Alerts />
+    </div>
+  </div>
+  <!-- main info display -->
+  <main>
+    <LoginGuard>
+      <slot />
+      <blockquote slot="login">Please sign-in.</blockquote>
+    </LoginGuard>
+  </main>
+</div>
 <footer>
   <div>
     <em>{site.name}</em> is an
@@ -61,17 +74,53 @@
     width: 100%;
     border-bottom: 1px solid var(--elements-color-dark);
     height: 5rem;
+    img {
+      vertical-align: middle !important;
+    }
     .logo {
-      width: auto;
-      height: 2rem;
+      img {
+        width: 100%; /* Set the logo width to 100% of its container */
+        height: auto; /* Allow the logo height to adjust proportionally */
+      }
+    }
+    .desktop-logo {
+      display: block;
+    }
+    .mobile-logo {
+      display: none;
+    }
+    @media (max-width: 480px) {
+      .desktop-logo {
+        display: none;
+      }
+      .mobile-logo {
+        display: block;
+      }
     }
   }
+  .headline-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    h1 {
+      font-weight: 300;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .status-alerts {
+      padding-bottom: 6px;
+    }
+  }
+
   main {
     padding: 20px;
     background-color: var(--background-color-dark-level1);
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    -khtml-border-radius: 0.2rem;
+    border-radius: 0.2rem;
   }
   footer {
-  border-top: 1px solid var(--elements-color-dark);
-  
+    border-top: 1px solid var(--elements-color-dark);
   }
 </style>

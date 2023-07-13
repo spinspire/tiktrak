@@ -49,6 +49,29 @@ html {
   }
 }
 
+nav,
+header {
+  * {
+    // removing bottom border on nav links for now
+    border: 0px solid !important;
+  }
+  a,
+  button {
+    -moz-border-radius: 0.8rem;
+    -webkit-border-radius: 0.8rem;
+    -khtml-border-radius: 0.8rem;
+    border-radius: 0.8rem;
+  }
+  // handling better ux on all main links
+  a:hover,
+  button:hover,
+  samp:hover {
+    filter: brightness(150%);
+    transition: filter 0.3s;
+    text-decoration: none;
+  }
+}
+
 .flex {
   display: flex;
 }
@@ -75,4 +98,9 @@ html {
 
 .dark-mode .button:hover {
   background-color: var(--hover-dark);
+}
+
+.error,
+.success {
+  border: none;
 }

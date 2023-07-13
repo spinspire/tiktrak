@@ -63,12 +63,21 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 5px;
     gap: 5px;
     > img {
       height: 2em;
       width: 2em;
       border-radius: 50%;
+    }
+    > samp {
+      display: inline-block !important;
+      -moz-border-radius: 20px !important;
+      -webkit-border-radius: 20px !important;
+      -khtml-border-radius: 20px !important;
+      border-radius: 20px !important;
+      padding: 0.5rem !important;
+      text-align: center !important;
+      line-height: 1.5rem !important;
     }
   }
   .wrapper {
