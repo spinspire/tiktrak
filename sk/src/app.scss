@@ -13,7 +13,7 @@
   --background-color-dark-level1: #2f3b52ff;
   --background-color-dark-level2: #20293cff;
 }
-
+// overrides for water.css
 body {
   /* TODO: Set background color based on mode */
   background-color: var(--background-color-dark);
@@ -26,6 +26,29 @@ body {
 
 body.dark-mode {
   background-color: var(--background-color-dark);
+}
+
+nav,
+header {
+  * {
+    // removing bottom border on nav links for now
+    border: 0px solid !important;
+  }
+  a,
+  button {
+    -moz-border-radius: 0.8rem;
+    -webkit-border-radius: 0.8rem;
+    -khtml-border-radius: 0.8rem;
+    border-radius: 0.8rem;
+  }
+  // handling better ux on all main links
+  a:hover,
+  button:hover,
+  samp:hover {
+    filter: brightness(150%);
+    transition: filter 0.3s;
+    text-decoration: none;
+  }
 }
 
 .flex {
@@ -54,4 +77,9 @@ body.dark-mode {
 
 .dark-mode .button:hover {
   background-color: var(--hover-dark);
+}
+
+.error,
+.success {
+  border: none;
 }

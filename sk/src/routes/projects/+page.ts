@@ -5,6 +5,11 @@ import { goto } from "$app/navigation";
 import { base } from "$app/paths";
 import { alerts } from "$lib/components/Alerts.svelte";
 
+/**
+ * Loads the page and retrieves a list of projects.
+ *
+ * @return {Promise<{ projects: Project[] }>} A promise that resolves to an object with a property `projects` which contains the list of projects.
+ */
 export const load: PageLoad = async () => {
   const projects = await client.collection("projects").getFullList();
   // send non-admins to the project detail page if they have access to only one project
