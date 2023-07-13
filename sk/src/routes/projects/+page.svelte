@@ -14,5 +14,5 @@
 {#each data.projects as item}
   <p><a href={`${base}/projects/${item.id}`}>{item.title}</a></p>
 {:else}
-  <p>No projects found. Create some.</p>
+  <p>No projects found. Ask the administrator to add you to a project.</p>
 {/each}
