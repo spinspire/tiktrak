@@ -10,7 +10,7 @@ export const load: PageLoad = async () => {
   // send non-admins to the project detail page if they have access to only one project
   if (projects.length === 1 && !(client.authStore.model instanceof Admin)) {
     const [project] = projects;
-    alerts.warning("Redirecting to your sole project.");
+    alerts.warning("Redirecting to your sole project.", 5000);
     goto(`${base}/projects/${project.id}`);
   }
   return {
