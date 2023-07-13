@@ -100,11 +100,13 @@
         <option value={user.id}>{user.name || user.username}</option>
       {/each}
     </select>
-    <p>
-      Created by <em>{data.item.expand?.creator?.name || "-"}</em> at {new Date(
-        data.item.created
-      ).toLocaleString()}
-    </p>
+    {#if data.item.id}
+      <p>
+        Created by <em>{data.item.expand?.creator?.name || "-"}</em> at {new Date(
+          data.item.created
+        ).toLocaleString()}
+      </p>
+    {/if}
   </div>
   <input
     bind:value={data.item.title}
