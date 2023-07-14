@@ -8,7 +8,7 @@
   $metadata.title = "Projects";
 </script>
 
-<LoginGuard adminOnly={true}>
+<LoginGuard admin={true}>
   <a href="./new/edit/"><button type="button">new project</button></a>
 </LoginGuard>
 {#each data.projects as item}
