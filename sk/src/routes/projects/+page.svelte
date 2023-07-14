@@ -2,6 +2,7 @@
   import { base } from "$app/paths";
   import { metadata } from "$lib/app/stores";
   import LoginGuard from "$lib/components/LoginGuard.svelte";
+  import { client } from "$lib/pocketbase";
   import type { PageData } from "./$types";
   export let data: PageData;
   $metadata.title = "Projects";
@@ -17,9 +18,14 @@
   <div class="row">
     <div class="col-logo">
       {#if item.logo}
-        <img src={item.logo} alt="Logo" />
+        {#await client.files.getUrl( item, item.logo, { thumb: "100x100" } ) then src}
+          <img {src} alt="project logo" />
+        {/await}
       {:else}
-        <img src={`${base}/generic-project-icon.svg`} alt="Generic Icon" />
+        <img
+          src={`${base}/generic-project-icon.svg`}
+          alt="generic project logo"
+        />
       {/if}
     </div>
     <div class="col">
@@ -55,6 +61,8 @@
       margin-left: 0.2rem;
       margin-right: 2rem;
       flex-shrink: 0;
+      width: 60px;
+      height: auto;
     }
     // @media (max-width: 480px) {
     //   .col {
