@@ -32,8 +32,11 @@
 
 <style lang="scss">
   .flex {
+    align-items: start;
+    margin-block-end: 1em;
+    gap: 1em;
     pre {
-      padding: 0 1em;
+      margin: 0;
     }
   }
 </style>
