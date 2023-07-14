@@ -28,7 +28,7 @@
     ><button type="button">create new ticket</button></a
   >
 </LoginGuard>
-<List project_id={data.project.id} />
+<List project={data.project} />
 
 <style lang="scss">
   .flex {
