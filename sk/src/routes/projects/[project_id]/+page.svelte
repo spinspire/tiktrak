@@ -1,5 +1,6 @@
 <script lang="ts">
   import { metadata } from "$lib/app/stores";
+  import LoginGuard from "$lib/components/LoginGuard.svelte";
   import { client } from "$lib/pocketbase";
   import type { PageData } from "./$types";
   import List from "./tickets/List.svelte";
@@ -19,7 +20,9 @@
   <pre>{data.project.description}</pre>
 </div>
 
-<a href="./edit/"><button type="button">edit project</button></a>
+<LoginGuard adminOnly={true}>
+  <a href="./edit/"><button type="button">edit project</button></a>
+</LoginGuard>
 <a href="./tickets/new/edit"><button type="button">create new ticket</button></a
 >
 <List project_id={data.project.id} />
