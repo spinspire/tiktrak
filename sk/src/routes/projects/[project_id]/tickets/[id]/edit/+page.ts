@@ -7,10 +7,17 @@ import type {
 import { get } from "svelte/store";
 import type { PageLoad } from "./$types";
 
-export const load: PageLoad = async function ({ params: { id } }) {
+export const load: PageLoad = async function ({ params: { id }, parent }) {
+  const { project } = await parent();
+  const { assignee } = project.config;
+
   const item: TicketsResponse =
     id === "new"
-      ? ({ description: "", creator: get(authModel)?.id } as TicketsResponse)
+      ? ({
+          description: "",
+          creator: get(authModel)?.id,
+          assignee,
+        } as TicketsResponse)
       : await client
           .collection("tickets")
           .getOne<TicketsResponse>(id, { expand: "creator" });
