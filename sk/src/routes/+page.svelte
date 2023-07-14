@@ -1,9 +1,19 @@
 <script lang="ts">
-  import { metadata } from "$lib/app/stores";
-  import LoginGuard from "$lib/components/LoginGuard.svelte";
-  $metadata.title = "Home";
+  import { site, sponsor } from "$lib/config";
 </script>
 
-<LoginGuard slotLogin={true} destination="/projects">
-  Redirecting ...
-</LoginGuard>
+<p>
+  {site.name} is an
+  <a href={site.source_url} target="_blank" rel="noreferrer"
+    >Open Source project.</a
+  >
+  sponsored by
+  <a href={sponsor.url} target="_blank" rel="noreferrer">{sponsor.name}</a>.
+</p>
+
+<p>
+  It's {site.description}. Thank you for using {site.name}. We'd love to hear
+  your feedback.
+</p>
+
+<p>Now go ahead, explore your <a href="projects">projects</a>.</p>
