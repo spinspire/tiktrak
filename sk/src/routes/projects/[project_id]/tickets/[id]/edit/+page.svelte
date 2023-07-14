@@ -6,13 +6,24 @@
   import { alertOnFailure } from "$lib/pocketbase/ui";
   import Markdown from "svelte-markdown";
   import type { PageData } from "./$types";
+  import LoginGuard from "$lib/components/LoginGuard.svelte";
+  import { alerts } from "$lib/components/Alerts.svelte";
   export let data: PageData;
   const descriptionEmpty = !data.item.description;
   const { comments, attachments } = data;
-  async function submit(e: SubmitEvent) {
+  async function submit(op: string | SubmitEvent) {
     data.item.project = data.project.id;
     alertOnFailure(async () => {
-      await save("tickets", data.item);
+      if (op === "delete") {
+        if (confirm("Are you sure you want delete this record PERMANENTLY?")) {
+          await client.collection("tickets").delete(data.item.id);
+          alerts.warning("Record deleted.", 5000);
+        } else {
+          return;
+        }
+      } else {
+        await save("tickets", data.item);
+      }
       goto("../../..");
     });
   }
@@ -95,7 +106,7 @@
       name="assignee"
       title="ticket assigned to"
     >
-      <option />
+      <option value={undefined} />
       {#each data.project.expand?.users || [] as user}
         <option value={user.id}>{user.name || user.username}</option>
       {/each}
@@ -108,13 +119,24 @@
       </p>
     {/if}
   </div>
-  <input
-    bind:value={data.item.title}
-    required
-    name="title"
-    placeholder="title"
-    title="ticket title"
-  />
+  <div class="flex">
+    <input
+      bind:value={data.item.title}
+      required
+      name="title"
+      placeholder="title"
+      title="ticket title"
+    />
+    {#if data.item.id}
+      <LoginGuard admin={true}>
+        <button
+          type="button"
+          on:click={() => submit("delete")}
+          title="permanently deletes this record">Delete</button
+        ></LoginGuard
+      >
+    {/if}
+  </div>
   <h4>Description</h4>
   <Markdown source={data.item.description} options={{ sanitize: true }} />
   <details open={descriptionEmpty}>
