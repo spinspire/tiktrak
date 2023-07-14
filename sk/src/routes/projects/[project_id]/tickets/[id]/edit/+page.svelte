@@ -8,6 +8,7 @@
   import type { PageData } from "./$types";
   import LoginGuard from "$lib/components/LoginGuard.svelte";
   import { alerts } from "$lib/components/Alerts.svelte";
+  import { metadata } from "$lib/app/stores";
   export let data: PageData;
   const descriptionEmpty = !data.item.description;
   const { comments, attachments } = data;
@@ -76,6 +77,9 @@
       input.dispatchEvent(new Event("input"));
     }
   }
+  $: $metadata.title = `${data.item.id ? "Edit" : "New"} Ticket: ${
+    data.item.title
+  }`;
 </script>
 
 <form on:submit|preventDefault={submit}>
