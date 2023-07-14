@@ -23,6 +23,14 @@
       goto("..");
     });
   }
+  function toggleAssignee(uid: string) {
+    if (uid === config.assignee) {
+      config.assignee = undefined;
+    } else {
+      config.assignee = uid;
+    }
+  }
+  $: ({ config = {} } = data.project); // this somehow helps with reducing re-fetches
 </script>
 
 <form on:submit|preventDefault={submit}>
@@ -59,10 +67,19 @@
   />
 
   <UserPicker bind:uids={data.project.users} />
+  <p class="help">
+    <kbd>Ctrl-Click</kbd> to toggle default assignee for the project.
+  </p>
   <div class="users">
     {#each data.project.users as uid}
       {#await client.collection("users").getOne(uid) then user}
-        <span class="user">{user.name || user.username}</span>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <span
+          class:assignee={uid === config.assignee}
+          class="user"
+          on:click={(e) => e.ctrlKey && toggleAssignee(uid)}
+          >{user.name || user.username}</span
+        >
       {/await}
     {:else}
       <span>No users selected</span>
@@ -86,13 +103,15 @@
     }
   }
   .users {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
     .user {
-      border: solid gray 1px;
-      display: inline-block;
-      padding: 0.5em;
-      margin: 1em 0;
-      &:not(:first-child) {
-        margin-left: 1em;
+      border: var(--primary-button-dark) solid 1px;
+      border-radius: 999px;
+      padding: 0.25em 0.5em;
+      &.assignee {
+        background-color: var(--primary-button-dark);
       }
     }
   }
