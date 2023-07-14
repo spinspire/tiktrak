@@ -20,7 +20,7 @@
         data.project.logo = file;
       }
       await save("projects", data.project);
-      goto("../../..");
+      goto("..");
     });
   }
 </script>
