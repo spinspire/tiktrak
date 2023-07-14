@@ -23,8 +23,11 @@
 <LoginGuard admin={true}>
   <a href="./edit/"><button type="button">edit project</button></a>
 </LoginGuard>
-<a href="./tickets/new/edit"><button type="button">create new ticket</button></a
->
+<LoginGuard admin={false}>
+  <a href="./tickets/new/edit"
+    ><button type="button">create new ticket</button></a
+  >
+</LoginGuard>
 <List project_id={data.project.id} />
 
 <style lang="scss">
