@@ -9,8 +9,9 @@
   import LoginGuard from "$lib/components/LoginGuard.svelte";
   import { alerts } from "$lib/components/Alerts.svelte";
   import { metadata } from "$lib/app/stores";
+  import Editor from "./Editor.svelte";
   export let data: PageData;
-  const descriptionEmpty = !data.item.description;
+  let descriptionEdit = !data.item.description;
   const { comments, attachments } = data;
   async function submit(op: string | SubmitEvent) {
     data.item.project = data.project.id;
@@ -141,19 +142,16 @@
       >
     {/if}
   </div>
-  <h4>Description</h4>
-  <Markdown source={data.item.description} options={{ sanitize: true }} />
-  <details open={descriptionEmpty}>
-    <summary>edit</summary>
-    <textarea
-      bind:value={data.item.description}
-      name="description"
-      placeholder="description"
-      rows="10"
-      title="ticket description"
-      on:paste={insertOnPaste}
-    />
-  </details>
+  <h4>Description <small>(click to edit)</small></h4>
+  <Editor
+    edit={descriptionEdit}
+    name="description"
+    placeholder="ticket description"
+    title="ticket description"
+    bind:value={data.item.description}
+    on:paste={insertOnPaste}
+    on:click={() => (descriptionEdit = true)}
+  />
   <button type="submit">Save</button>
 </form>
 
@@ -204,21 +202,11 @@
   {/each}
   <form on:submit|preventDefault={submitComment}>
     <h4>New Comment</h4>
-    <details open>
-      <summary>Preview</summary>
-      <div class="comment">
-        <div class="body">
-          <Markdown source={comment.body} options={{ sanitize: true }} />
-        </div>
-      </div>
-    </details>
-    <textarea
-      bind:value={comment.body}
-      required
+    <Editor
       name="body"
       placeholder="comment body"
-      rows="5"
       title="comment body"
+      bind:value={comment.body}
       on:paste={insertOnPaste}
     />
     <button type="submit">Add Comment</button>
