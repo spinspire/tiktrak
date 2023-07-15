@@ -22,10 +22,10 @@ html {
     flex: 1 1 auto;
     display: flex;
     flex-flow: column;
-    // fixed width and no horizonal scrollbars
-    width: 1280px;
-    // unset max-width water.css
-    max-width: unset;
+    // override max-width water.css
+    width: 100%;
+    max-width: 1280px;
+    // no horizonal scrollbars
     overflow-x: hidden;
     background-color: var(--background-color-dark);
     /* TODO: Set background color based on mode */
