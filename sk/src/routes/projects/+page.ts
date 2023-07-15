@@ -18,6 +18,12 @@ export const load: PageLoad = async () => {
     alerts.warning("Redirecting to your sole project.", 5000);
     goto(`${base}/projects/${project.id}`);
   }
+  for (const project of projects) {
+    const tickets = await client
+      .collection("tickets")
+      .getList(undefined, 1, { filter: `project="${project.id}"` });
+    project.tickets = tickets;
+  }
   return {
     projects,
   };

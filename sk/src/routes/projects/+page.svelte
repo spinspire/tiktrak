@@ -32,9 +32,9 @@
       <h2><a href={`${base}/projects/${item.id}`}>{item.title}</a></h2>
     </div>
     <div class="col">
-      <span>status here</span>
+      <span>{item.tickets.totalItems} tickets</span>
     </div>
-    <div class="col">date updated</div>
+    <div class="col">Updated {new Date(item.updated).toLocaleDateString()}</div>
   </div>
 {:else}
   <p>No projects found. Ask the administrator to add you to a project.</p>
