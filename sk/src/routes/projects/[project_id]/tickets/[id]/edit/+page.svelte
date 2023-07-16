@@ -86,13 +86,15 @@
 
 <form on:submit|preventDefault={submit} class="flex-vertical">
   <div class="flex">
-    <input
-      bind:value={data.item.title}
-      required
-      name="title"
-      placeholder="title"
-      title="ticket title"
-    />
+    <label
+      >Title<input
+        bind:value={data.item.title}
+        required
+        name="title"
+        placeholder="title"
+        title="ticket title"
+      /></label
+    >
     {#if data.item.id}
       <LoginGuard admin={true}>
         <button
@@ -111,43 +113,55 @@
     {/if}
   </div>
   <div class="flex">
-    <select
-      bind:value={data.item.type}
-      required
-      name="type"
-      title="ticket type"
+    <label
+      >Type<select
+        bind:value={data.item.type}
+        required
+        name="type"
+        title="ticket type"
+      >
+        <option />
+        {#each data.project.config.types || [] as v}
+          <option>{v}</option>
+        {/each}
+      </select></label
     >
-      <option />
-      {#each data.project.config.types || [] as v}
-        <option>{v}</option>
-      {/each}
-    </select>
-    <select bind:value={data.item.status} name="status" title="ticket status">
-      <option />
-      {#each data.project.config.statuses || [] as v}
-        <option>{v}</option>
-      {/each}
-    </select>
-    <select
-      bind:value={data.item.priority}
-      name="priority"
-      title="ticket priority"
+    <label
+      >Status<select
+        bind:value={data.item.status}
+        name="status"
+        title="ticket status"
+      >
+        <option />
+        {#each data.project.config.statuses || [] as v}
+          <option>{v}</option>
+        {/each}
+      </select></label
     >
-      {#each data.project.config.priorities || [] as v}
-        <option>{v}</option>
-      {/each}
-    </select>
+    <label
+      >Priority<select
+        bind:value={data.item.priority}
+        name="priority"
+        title="ticket priority"
+      >
+        {#each data.project.config.priorities || [] as v}
+          <option>{v}</option>
+        {/each}
+      </select></label
+    >
     <!-- svelte-ignore a11y-label-has-associated-control -->
-    <select
-      bind:value={data.item.assignee}
-      name="assignee"
-      title="ticket assigned to"
+    <label
+      >Assignee<select
+        bind:value={data.item.assignee}
+        name="assignee"
+        title="ticket assigned to"
+      >
+        <option value={undefined} />
+        {#each data.project.expand?.users || [] as user}
+          <option value={user.id}>{user.name || user.username}</option>
+        {/each}
+      </select></label
     >
-      <option value={undefined} />
-      {#each data.project.expand?.users || [] as user}
-        <option value={user.id}>{user.name || user.username}</option>
-      {/each}
-    </select>
   </div>
   <div class="flex">
     <label
@@ -170,15 +184,19 @@
     </label>
   </div>
   <div title="ticket description (click to edit)">
-    <Editor
-      edit={descriptionEdit}
-      name="description"
-      placeholder="ticket description"
-      title="ticket description"
-      bind:value={data.item.description}
-      on:paste={insertOnPaste}
-      on:click={() => (descriptionEdit = true)}
-    />
+    <!-- svelte-ignore a11y-label-has-associated-control -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <label on:click={() => (descriptionEdit = true)}
+      >Description<Editor
+        edit={descriptionEdit}
+        name="description"
+        placeholder="ticket description"
+        title="ticket description"
+        bind:value={data.item.description}
+        on:paste={insertOnPaste}
+        on:click={() => (descriptionEdit = true)}
+      /></label
+    >
   </div>
   <div class="actions">
     <button type="submit">Save</button>
