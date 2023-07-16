@@ -41,6 +41,7 @@ migrate(
     const config = {
       statuses: ["created", "ready", "on-hold", "in-progress", "completed"],
       types: ["question", "task", "bug", "feature"],
+      priorities: ["TBD", "1 - high", "2 - medium", "3 - low"],
     };
     for (const i in projects) {
       const { title, users } = projects[i];
@@ -62,6 +63,7 @@ migrate(
           new Record(coll_tickets, {
             title: `ticket ${i + 1} for ${title}`,
             type,
+            priority: "TBD",
             project: project.id,
             creator,
           })

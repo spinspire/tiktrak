@@ -48,6 +48,19 @@ migrate((db) => {
       },
       {
         "system": false,
+        "id": "yygmi9sd",
+        "name": "priority",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
         "id": "x4jus3sd",
         "name": "status",
         "type": "text",

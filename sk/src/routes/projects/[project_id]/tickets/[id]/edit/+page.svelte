@@ -108,7 +108,6 @@
       name="priority"
       title="ticket priority"
     >
-      <option />
       {#each data.project.config.priorities || [] as v}
         <option>{v}</option>
       {/each}

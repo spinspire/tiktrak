@@ -29,7 +29,7 @@
     "tickets",
     {
       filter: filter + title_filter,
-      sort: "-updated",
+      sort: "priority,-updated",
       expand: "creator,assignee",
     },
     undefined, // page
