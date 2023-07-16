@@ -84,7 +84,7 @@
   }`;
 </script>
 
-<form on:submit|preventDefault={submit}>
+<form on:submit|preventDefault={submit} class="flex-vertical">
   <div class="flex">
     <select
       bind:value={data.item.type}
@@ -143,18 +143,21 @@
       >
     {/if}
   </div>
-  <h4>Description <small>(click to edit)</small></h4>
-  <Editor
-    edit={descriptionEdit}
-    name="description"
-    placeholder="ticket description"
-    title="ticket description"
-    bind:value={data.item.description}
-    on:paste={insertOnPaste}
-    on:click={() => (descriptionEdit = true)}
-  />
-  <button type="submit">Save</button>
-  <a href={back}><button type="button">Cancel</button></a>
+  <div title="ticket description (click to edit)">
+    <Editor
+      edit={descriptionEdit}
+      name="description"
+      placeholder="ticket description"
+      title="ticket description"
+      bind:value={data.item.description}
+      on:paste={insertOnPaste}
+      on:click={() => (descriptionEdit = true)}
+    />
+  </div>
+  <div class="actions">
+    <button type="submit">Save</button>
+    <a href={back}><button type="button">Cancel</button></a>
+  </div>
 </form>
 
 {#if data.item.id}
