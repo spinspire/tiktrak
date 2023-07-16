@@ -19,6 +19,7 @@ export const load: LayoutLoad = async function ({ params: { project_id } }) {
                 "completed",
               ],
               types: ["question", "task", "bug", "feature"],
+              priorities: ["1 - high", "2 - medium", "3 - low"],
             },
           } as ProjectsResponse)
         : await client

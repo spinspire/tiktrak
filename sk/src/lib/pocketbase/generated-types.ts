@@ -84,6 +84,7 @@ export type TicketsRecord = {
 	project: RecordIdString
 	creator: RecordIdString
 	assignee?: RecordIdString
+	priority?: string
 }
 
 export type UsersRecord = {

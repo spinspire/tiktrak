@@ -84,6 +84,7 @@
           {/each}
         </select>
       </th>
+      <th>priority</th>
       <th
         >assignee
         <select bind:value={assignee} title="filter by assignee">
@@ -107,13 +108,15 @@
   </thead>
   <tbody>
     {#each $store.items as item}
+      {@const updated = new Date(item.updated)}
       <tr>
         <td>{item.type}</td>
         <td> <a href={`./tickets/${item.id}/edit`}> {item.title}</a></td>
         <td>{item.status || "-"}</td>
+        <td>{item.priority || "-"}</td>
         <td>{item.expand?.assignee?.name || "-"}</td>
         <td>{item.expand?.creator?.name || "-"}</td>
-        <td>{new Date(item.updated).toLocaleString()}</td>
+        <td title={updated.toLocaleString()}>{updated.toLocaleDateString()}</td>
       </tr>
     {:else}
       <tr>

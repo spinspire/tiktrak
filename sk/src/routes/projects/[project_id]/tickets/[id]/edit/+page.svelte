@@ -106,6 +106,16 @@
       <option>in-progress</option>
       <option>completed</option>
     </select>
+    <select
+      bind:value={data.item.priority}
+      name="priority"
+      title="ticket priority"
+    >
+      <option />
+      {#each data.project.config.priorities || [] as p}
+        <option>{p}</option>
+      {/each}
+    </select>
     <!-- svelte-ignore a11y-label-has-associated-control -->
     <select
       bind:value={data.item.assignee}
