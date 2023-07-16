@@ -8,7 +8,19 @@ export const load: LayoutLoad = async function ({ params: { project_id } }) {
   try {
     const project: ProjectsResponse =
       project_id === "new"
-        ? ({ users: [] } as ProjectsResponse)
+        ? ({
+            title: "",
+            config: {
+              statuses: [
+                "created",
+                "ready",
+                "on-hold",
+                "in-progress",
+                "completed",
+              ],
+              types: ["question", "task", "bug", "feature"],
+            },
+          } as ProjectsResponse)
         : await client
             .collection("projects")
             .getOne<ProjectsResponse>(project_id, { expand: "users" });
