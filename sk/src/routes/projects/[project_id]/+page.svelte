@@ -18,10 +18,12 @@
       alt="project logo"
     />
   {/if}
-  <SvelteMarkdown
-    source={data.project.description}
-    options={{ sanitize: true }}
-  />
+  <div>
+    <SvelteMarkdown
+      source={data.project.description}
+      options={{ sanitize: true }}
+    />
+  </div>
 </div>
 
 <LoginGuard admin={true}>
