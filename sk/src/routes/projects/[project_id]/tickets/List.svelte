@@ -13,6 +13,16 @@
   let assignee: string | undefined = undefined;
   let creator: string | undefined = undefined;
   let title = "";
+  let priority: "+" | "-" | undefined = undefined;
+  let updated: "+" | "-" | undefined = "-";
+  $: sorts = {
+    priority,
+    updated,
+  };
+  $: sort = Object.entries(sorts)
+    .filter(([k, v]) => v !== undefined)
+    .map(([k, v]) => v + k)
+    .join(",");
   $: filters = {
     project: project.id,
     type,
@@ -29,7 +39,7 @@
     "tickets",
     {
       filter: filter + title_filter,
-      sort: "priority,-updated",
+      sort,
       expand: "creator,assignee",
     },
     undefined, // page
@@ -84,7 +94,14 @@
           {/each}
         </select>
       </th>
-      <th>priority</th>
+      <th
+        >priority
+        <select bind:value={priority} title="sort by priority">
+          <option value={undefined} />
+          <option value="+">&uarr;</option>
+          <option value="-">&darr;</option>
+        </select>
+      </th>
       <th
         >assignee
         <select bind:value={assignee} title="filter by assignee">
@@ -103,7 +120,14 @@
           {/each}
         </select>
       </th>
-      <th>updated</th>
+      <th
+        >updated
+        <select bind:value={updated} title="sort by updated">
+          <option value={undefined} />
+          <option value="+">&uarr;</option>
+          <option value="-">&darr;</option>
+        </select>
+      </th>
     </tr>
   </thead>
   <tbody>
