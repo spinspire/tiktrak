@@ -1,26 +1,26 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
+  import { goto, invalidateAll } from "$app/navigation";
+  import { alerts } from "$lib/components/Alerts.svelte";
   import FileInput from "$lib/components/FileInput.svelte";
   import { client, save } from "$lib/pocketbase";
   import { alertOnFailure } from "$lib/pocketbase/ui";
+  import Editor from "../tickets/[id]/edit/Editor.svelte";
   import type { PageData } from "./$types";
   import UserPicker from "./UserPicker.svelte";
   export let data: PageData;
+  const back = "..";
   let files: FileList;
+  let { users, config } = data.project; // detach from data to reduce re-fetches
   async function submit(e: SubmitEvent) {
     alertOnFailure(async () => {
-      if (!data.project.config) {
-        data.project.config = {
-          statuses: ["created", "ready", "on-hold", "in-progress", "completed"],
-          types: ["question", "task", "bug", "feature"],
-        };
-      }
+      data.project = { ...data.project, users, config };
       if (files && files.length > 0) {
         const [file] = files;
         data.project.logo = file;
       }
       await save("projects", data.project);
-      goto("..");
+      await invalidateAll();
+      goto(back);
     });
   }
   function toggleAssignee(uid: string) {
@@ -30,10 +30,9 @@
       config.assignee = uid;
     }
   }
-  $: ({ config = {} } = data.project); // this somehow helps with reducing re-fetches
 </script>
 
-<form on:submit|preventDefault={submit}>
+<form on:submit|preventDefault={submit} class="flex-vertical">
   <input
     bind:value={data.project.title}
     required
@@ -58,34 +57,41 @@
   <FileInput bind:files multiple={false} accept="image/*">
     Project logo: drag/drop file or click.
   </FileInput>
-  <textarea
+  <Editor
     bind:value={data.project.description}
+    preview={false}
     name="description"
     placeholder="project description"
     rows="10"
     title="project description"
   />
 
-  <UserPicker bind:uids={data.project.users} />
-  <p class="help">
-    <kbd>Ctrl-Click</kbd> to toggle default assignee for the project.
-  </p>
-  <div class="users">
-    {#each data.project.users as uid}
-      {#await client.collection("users").getOne(uid) then user}
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span
-          class:assignee={uid === config.assignee}
-          class="user"
-          on:click={(e) => e.ctrlKey && toggleAssignee(uid)}
-          >{user.name || user.username}</span
-        >
-      {/await}
-    {:else}
-      <span>No users selected</span>
-    {/each}
+  <div>
+    <h4>Project Users</h4>
+    <UserPicker bind:uids={users} />
+    <div class="users">
+      {#each users as uid}
+        {#await client.collection("users").getOne(uid) then user}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <span
+            class:assignee={uid === config.assignee}
+            class="user"
+            on:click={(e) => e.ctrlKey && toggleAssignee(uid)}
+            >{user.name || user.username}</span
+          >
+        {/await}
+      {:else}
+        <span>No users selected</span>
+      {/each}
+    </div>
+    <small>
+      <kbd>Ctrl-Click</kbd> to toggle default assignee for the project.
+    </small>
   </div>
-  <button type="submit">Save</button>
+  <div class="actions">
+    <button type="submit">Save</button>
+    <a href={back}><button type="button">Cancel</button></a>
+  </div>
 </form>
 
 <style lang="scss">
