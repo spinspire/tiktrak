@@ -102,6 +102,7 @@
           <option value="-">&darr;</option>
         </select>
       </th>
+      <th>estimate<br />/budget</th>
       <th
         >assignee
         <select bind:value={assignee} title="filter by assignee">
@@ -138,6 +139,7 @@
         <td> <a href={`./tickets/${item.id}/edit`}> {item.title}</a></td>
         <td>{item.status || "-"}</td>
         <td>{item.priority || "-"}</td>
+        <td>{item.estimate || "-"}/{item.budget || "-"}</td>
         <td>{item.expand?.assignee?.name || "-"}</td>
         <td>{item.expand?.creator?.name || "-"}</td>
         <td title={updated.toLocaleString()}>{updated.toLocaleDateString()}</td>

@@ -87,6 +87,8 @@ export type TicketsRecord = {
 	project: RecordIdString
 	creator: RecordIdString
 	assignee?: RecordIdString
+	estimate?: number
+	budget?: number
 }
 
 export type UsersRecord = {

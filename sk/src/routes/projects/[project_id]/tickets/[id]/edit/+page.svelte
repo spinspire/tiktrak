@@ -86,6 +86,31 @@
 
 <form on:submit|preventDefault={submit} class="flex-vertical">
   <div class="flex">
+    <input
+      bind:value={data.item.title}
+      required
+      name="title"
+      placeholder="title"
+      title="ticket title"
+    />
+    {#if data.item.id}
+      <LoginGuard admin={true}>
+        <button
+          type="button"
+          on:click={() => submit("delete")}
+          title="permanently deletes this record">Delete</button
+        ></LoginGuard
+      >
+    {/if}
+    {#if data.item.id}
+      <div>
+        Created by <em>{data.item.expand?.creator?.name || "-"}</em> at {new Date(
+          data.item.created
+        ).toLocaleString()}
+      </div>
+    {/if}
+  </div>
+  <div class="flex">
     <select
       bind:value={data.item.type}
       required
@@ -123,31 +148,26 @@
         <option value={user.id}>{user.name || user.username}</option>
       {/each}
     </select>
-    {#if data.item.id}
-      <p>
-        Created by <em>{data.item.expand?.creator?.name || "-"}</em> at {new Date(
-          data.item.created
-        ).toLocaleString()}
-      </p>
-    {/if}
   </div>
   <div class="flex">
-    <input
-      bind:value={data.item.title}
-      required
-      name="title"
-      placeholder="title"
-      title="ticket title"
-    />
-    {#if data.item.id}
-      <LoginGuard admin={true}>
-        <button
-          type="button"
-          on:click={() => submit("delete")}
-          title="permanently deletes this record">Delete</button
-        ></LoginGuard
-      >
-    {/if}
+    <label
+      >Estimate (units):
+      <input
+        bind:value={data.item.estimate}
+        type="number"
+        name="estimate"
+        title="effort estimated (by assignee)"
+      />
+    </label>
+    <label
+      >Budget (units):
+      <input
+        bind:value={data.item.budget}
+        type="number"
+        name="budget"
+        title="budget allocated (by creator)"
+      />
+    </label>
   </div>
   <div title="ticket description (click to edit)">
     <Editor

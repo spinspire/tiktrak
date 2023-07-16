@@ -129,6 +129,30 @@ migrate((db) => {
           "maxSelect": 1,
           "displayFields": []
         }
+      },
+      {
+        "system": false,
+        "id": "8e2xeczn",
+        "name": "estimate",
+        "type": "number",
+        "required": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      },
+      {
+        "system": false,
+        "id": "r0oo8tse",
+        "name": "budget",
+        "type": "number",
+        "required": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
       }
     ],
     "indexes": [
