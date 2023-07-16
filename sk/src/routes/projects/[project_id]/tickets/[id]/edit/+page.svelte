@@ -11,6 +11,7 @@
   import { metadata } from "$lib/app/stores";
   import Editor from "./Editor.svelte";
   export let data: PageData;
+  const back = "../../..";
   let descriptionEdit = !data.item.description;
   const { comments, attachments } = data;
   async function submit(op: string | SubmitEvent) {
@@ -26,7 +27,7 @@
       } else {
         await save("tickets", data.item);
       }
-      goto("../../..");
+      goto(back);
     });
   }
   const COMMENT = { body: "", user: $authModel?.id, ticket: data.item.id };
@@ -153,6 +154,7 @@
     on:click={() => (descriptionEdit = true)}
   />
   <button type="submit">Save</button>
+  <a href={back}><button type="button">Cancel</button></a>
 </form>
 
 {#if data.item.id}
