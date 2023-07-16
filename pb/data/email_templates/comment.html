@@ -1,0 +1,9 @@
+<p>
+  A new comment was added to the following ticket by {{ .record.expand.user.name
+  }}:
+</p>
+
+<a
+  href="{{ .meta.AppUrl }}/projects/{{ .record.expand.ticket.project }}/tickets/{{ .record.expand.ticket.id }}/edit/"
+  >{{ .record.expand.ticket.title }}</a
+>

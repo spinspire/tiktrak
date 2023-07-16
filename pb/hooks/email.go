@@ -19,19 +19,26 @@ func init() {
 	tpls = template.Must(template.ParseGlob("data/email_templates/*"))
 }
 
+// set IgnoreEmailVisibilityFlag for the record and it's expanded records (recursively)
+func ignoreEmailVisibility(record *models.Record, value bool) {
+	record.IgnoreEmailVisibility(value)
+	for _, v := range record.Expand() {
+		if child, ok := v.(*models.Record); ok {
+			// recursively set ...
+			ignoreEmailVisibility(child, value)
+		}
+	}
+}
+
 func doEmail(app *pocketbase.PocketBase, action, action_params string, record *models.Record) (err error) {
 	// we have to IgnoreEmailVisibility(true) on the main record and all expanded relations in order
 	// to include email fields in the exported JSON
-	record.IgnoreEmailVisibility(true)
-	for _, v := range record.Expand() {
-		if r, ok := v.(*models.Record); ok {
-			r.IgnoreEmailVisibility(true)
-		}
-	}
+	ignoreEmailVisibility(record, true)
 
 	// Export record to JSON and import it back to convert it into map[string]any.
 	// Should I use record.PublicExport() instead?
 	ba, _ := json.Marshal(record)
+	// log.Default().Println(string(ba))
 	var _record map[string]any
 	json.Unmarshal(ba, &_record)
 
