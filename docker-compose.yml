@@ -11,6 +11,8 @@ services:
     working_dir: /app/pb
     environment:
       - HOME=/app/pb
+      # keep only if you want to generate sample data
+      - SAMPLE_DATA_DOMAIN=${SAMPLE_DATA_DOMAIN}
     volumes:
       - ${PWD}/pb:/app/pb
       - ${PWD}/sk:/app/sk

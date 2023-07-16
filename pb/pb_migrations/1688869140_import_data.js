@@ -19,6 +19,13 @@ const projects = [
 
 migrate(
   (db) => {
+    const domain = process.env["SAMPLE_DATA_DOMAIN"];
+    if (!domain) {
+      console.log(
+        "To enable importing sample data, set env var SAMPLE_DATA_DOMAIN"
+      );
+      return;
+    }
     const dao = new Dao(db);
     const coll_users = dao.findCollectionByNameOrId("users");
     const coll_projects = dao.findCollectionByNameOrId("projects");
@@ -26,7 +33,7 @@ migrate(
     const coll_hooks = dao.findCollectionByNameOrId("hooks");
     // create users
     for (const username of users) {
-      const email = username + "@spinspire.com";
+      const email = username + "@" + domain;
       const record = new Record(coll_users, {
         id: username,
         email,
@@ -110,6 +117,13 @@ migrate(
     );
   },
   (db) => {
+    const domain = process.env["SAMPLE_DATA_DOMAIN"];
+    if (!domain) {
+      console.log(
+        "To enable importing sample data, set env var SAMPLE_DATA_DOMAIN"
+      );
+      return;
+    }
     const dao = new Dao(db);
     // delete attachments
     for (const record of dao.findRecordsByExpr("attachments")) {
