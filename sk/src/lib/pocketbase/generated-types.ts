@@ -14,23 +14,24 @@ export enum Collections {
 // Alias types for improved usability
 export type IsoDateString = string
 export type RecordIdString = string
+export type HTMLString = string
 
 // System fields
-export type BaseSystemFields = {
+export type BaseSystemFields<T = never> = {
 	id: RecordIdString
 	created: IsoDateString
 	updated: IsoDateString
 	collectionId: string
 	collectionName: Collections
-	expand?: { [key: string]: any }
+	expand?: T
 }
 
-export type AuthSystemFields = {
+export type AuthSystemFields<T = never> = {
 	email: string
 	emailVisibility: boolean
 	username: string
 	verified: boolean
-} & BaseSystemFields
+} & BaseSystemFields<T>
 
 // Record types for each collection
 
@@ -72,19 +73,19 @@ export type ProjectsRecord<Tconfig = unknown> = {
 	logo?: string
 	config: null | Tconfig
 	description?: string
-	users?: RecordIdString
+	users?: RecordIdString[]
 }
 
 export type TicketsRecord = {
 	title: string
 	description?: string
 	type: string
+	priority: string
 	status?: string
 	substatus?: string
 	project: RecordIdString
 	creator: RecordIdString
 	assignee?: RecordIdString
-	priority?: string
 }
 
 export type UsersRecord = {
@@ -93,12 +94,14 @@ export type UsersRecord = {
 }
 
 // Response types include system fields and match responses from the PocketBase API
-export type AttachmentsResponse = AttachmentsRecord & BaseSystemFields
-export type CommentsResponse = CommentsRecord & BaseSystemFields
-export type HooksResponse = HooksRecord & BaseSystemFields
-export type ProjectsResponse<Tconfig = unknown> = ProjectsRecord<Tconfig> & BaseSystemFields
-export type TicketsResponse = TicketsRecord & BaseSystemFields
-export type UsersResponse = UsersRecord & AuthSystemFields
+export type AttachmentsResponse<Texpand = unknown> = Required<AttachmentsRecord> & BaseSystemFields<Texpand>
+export type CommentsResponse<Texpand = unknown> = Required<CommentsRecord> & BaseSystemFields<Texpand>
+export type HooksResponse<Texpand = unknown> = Required<HooksRecord> & BaseSystemFields<Texpand>
+export type ProjectsResponse<Tconfig = unknown, Texpand = unknown> = Required<ProjectsRecord<Tconfig>> & BaseSystemFields<Texpand>
+export type TicketsResponse<Texpand = unknown> = Required<TicketsRecord> & BaseSystemFields<Texpand>
+export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
+
+// Types containing all Records and Responses, useful for creating typing helper functions
 
 export type CollectionRecords = {
 	attachments: AttachmentsRecord
@@ -107,4 +110,13 @@ export type CollectionRecords = {
 	projects: ProjectsRecord
 	tickets: TicketsRecord
 	users: UsersRecord
+}
+
+export type CollectionResponses = {
+	attachments: AttachmentsResponse
+	comments: CommentsResponse
+	hooks: HooksResponse
+	projects: ProjectsResponse
+	tickets: TicketsResponse
+	users: UsersResponse
 }
