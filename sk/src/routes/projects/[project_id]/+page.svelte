@@ -2,6 +2,7 @@
   import { metadata } from "$lib/app/stores";
   import LoginGuard from "$lib/components/LoginGuard.svelte";
   import { client } from "$lib/pocketbase";
+  import SvelteMarkdown from "svelte-markdown";
   import type { PageData } from "./$types";
   import List from "./tickets/List.svelte";
   export let data: PageData;
@@ -17,7 +18,10 @@
       alt="project logo"
     />
   {/if}
-  <pre>{data.project.description}</pre>
+  <SvelteMarkdown
+    source={data.project.description}
+    options={{ sanitize: true }}
+  />
 </div>
 
 <LoginGuard admin={true}>
