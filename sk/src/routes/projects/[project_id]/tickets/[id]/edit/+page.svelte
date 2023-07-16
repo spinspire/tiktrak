@@ -93,18 +93,15 @@
       title="ticket type"
     >
       <option />
-      <option>task</option>
-      <option>question</option>
-      <option>bug</option>
-      <option>feature</option>
+      {#each data.project.config.types || [] as v}
+        <option>{v}</option>
+      {/each}
     </select>
     <select bind:value={data.item.status} name="status" title="ticket status">
       <option />
-      <option>created</option>
-      <option>ready</option>
-      <option>on-hold</option>
-      <option>in-progress</option>
-      <option>completed</option>
+      {#each data.project.config.statuses || [] as v}
+        <option>{v}</option>
+      {/each}
     </select>
     <select
       bind:value={data.item.priority}
@@ -112,8 +109,8 @@
       title="ticket priority"
     >
       <option />
-      {#each data.project.config.priorities || [] as p}
-        <option>{p}</option>
+      {#each data.project.config.priorities || [] as v}
+        <option>{v}</option>
       {/each}
     </select>
     <!-- svelte-ignore a11y-label-has-associated-control -->
