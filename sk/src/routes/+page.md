@@ -2,13 +2,15 @@
   import { site, sponsor } from "$lib/config";
 </script>
 
-_{site.name}_ is a ticket tracking application built with SvelteKit & PocketBase. Thank you for using it. We'd love to hear your [feedback]({site.source_url}/discussions).
+_{site.name}_ is a ticket tracking application built on top of [pocketbase-sveltekit-starter](https://github.com/spinspire/pocketbase-sveltekit-starter). Thank you for using it. We'd love to hear your [feedback]({site.source_url}/discussions).
 
 Please read the _help_ section below before using this application. But if you're already familiar, then go ahead and explore your [projects](projects).
 
 ## Help
 
 _{site.name}_ is a ticket tracking application. We try to keep it simple, minimal, but useful.
+
+## Data Model
 
 - There are `users` (once signed up and signed in)
 - `users` are assigned to `projects` (at least one).
