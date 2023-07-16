@@ -10,6 +10,7 @@
   import { alerts } from "$lib/components/Alerts.svelte";
   import { metadata } from "$lib/app/stores";
   import Editor from "./Editor.svelte";
+  import { base } from "$app/paths";
   export let data: PageData;
   const back = "../../..";
   let descriptionEdit = !data.item.description;
@@ -110,6 +111,9 @@
           data.item.created
         ).toLocaleString()}
       </div>
+      <a href={`${base}/auditlog/tickets/${data.item.id}`}>
+        <button type="button">auditlog</button>
+      </a>
     {/if}
   </div>
   <div class="flex">

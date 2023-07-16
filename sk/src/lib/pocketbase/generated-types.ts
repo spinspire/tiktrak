@@ -4,6 +4,7 @@
 
 export enum Collections {
 	Attachments = "attachments",
+	Auditlog = "auditlog",
 	Comments = "comments",
 	Hooks = "hooks",
 	Projects = "projects",
@@ -42,6 +43,16 @@ export type AttachmentsRecord = {
 	label: string
 }
 
+export type AuditlogRecord<Tdata = unknown, Toriginal = unknown> = {
+	collection: string
+	record: string
+	event: string
+	user?: RecordIdString
+	admin?: string
+	data?: null | Tdata
+	original?: null | Toriginal
+}
+
 export type CommentsRecord = {
 	ticket: RecordIdString
 	user: RecordIdString
@@ -56,8 +67,8 @@ export enum HooksEventOptions {
 
 export enum HooksActionTypeOptions {
 	"command" = "command",
-	"post" = "post",
 	"email" = "email",
+	"post" = "post",
 }
 export type HooksRecord = {
 	collection: string
@@ -98,6 +109,7 @@ export type UsersRecord = {
 
 // Response types include system fields and match responses from the PocketBase API
 export type AttachmentsResponse<Texpand = unknown> = Required<AttachmentsRecord> & BaseSystemFields<Texpand>
+export type AuditlogResponse<Tdata = unknown, Toriginal = unknown, Texpand = unknown> = Required<AuditlogRecord<Tdata, Toriginal>> & BaseSystemFields<Texpand>
 export type CommentsResponse<Texpand = unknown> = Required<CommentsRecord> & BaseSystemFields<Texpand>
 export type HooksResponse<Texpand = unknown> = Required<HooksRecord> & BaseSystemFields<Texpand>
 export type ProjectsResponse<Tconfig = unknown, Texpand = unknown> = Required<ProjectsRecord<Tconfig>> & BaseSystemFields<Texpand>
@@ -108,6 +120,7 @@ export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSyste
 
 export type CollectionRecords = {
 	attachments: AttachmentsRecord
+	auditlog: AuditlogRecord
 	comments: CommentsRecord
 	hooks: HooksRecord
 	projects: ProjectsRecord
@@ -117,6 +130,7 @@ export type CollectionRecords = {
 
 export type CollectionResponses = {
 	attachments: AttachmentsResponse
+	auditlog: AuditlogResponse
 	comments: CommentsResponse
 	hooks: HooksResponse
 	projects: ProjectsResponse
