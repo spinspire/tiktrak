@@ -57,6 +57,7 @@ export enum HooksEventOptions {
 export enum HooksActionTypeOptions {
 	"command" = "command",
 	"post" = "post",
+	"email" = "email",
 }
 export type HooksRecord = {
 	collection: string
