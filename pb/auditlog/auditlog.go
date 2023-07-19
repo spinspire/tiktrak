@@ -1,6 +1,7 @@
 package auditlog
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -18,6 +19,22 @@ var collections = strings.Split(os.Getenv("AUDITLOG"), ",")
 
 func Register(app *pocketbase.PocketBase) {
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		// tighten up the ListRule on "auditlog" collection
+		// see https://github.com/pocketbase/pocketbase/discussions/1281#discussioncomment-6489034
+		app.OnRecordsListRequest("auditlog").PreAdd(func(e *core.RecordsListEvent) error {
+			requestInfo := apis.RequestInfo(e.HttpContext)
+			for _, record := range e.Records {
+				rule := record.Collection().ListRule
+				can, err := app.Dao().CanAccessRecord(record, requestInfo, rule)
+				if err != nil {
+					return err
+				}
+				if !can {
+					return fmt.Errorf("Access denied: %s:???", *&record.Collection().Name)
+				}
+			}
+			return nil
+		})
 		app.OnRecordAfterCreateRequest().Add(func(e *core.RecordCreateEvent) error {
 			return doAudit(app, "insert", e.Record, e.HttpContext)
 		})
